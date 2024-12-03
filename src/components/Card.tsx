@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { ToDoObject } from "../atoms";
 
 interface CardComponentProps {
-  isDragging: boolean;
+  $isDragging: boolean;
 }
 
 const CardComponent = styled.div<CardComponentProps>`
   background-color: ${(props) =>
-    props.isDragging ? "#ffffff85" : props.theme.cardColor};
+    props.$isDragging ? "#ffffff85" : props.theme.cardColor};
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -16,20 +17,20 @@ const CardComponent = styled.div<CardComponentProps>`
 `;
 
 interface CardProps {
-  todo: string;
+  todo: ToDoObject;
   index: number;
 }
 
 const Card = memo(({ todo, index }: CardProps) => (
-  <Draggable draggableId={todo} index={index}>
+  <Draggable draggableId={String(todo.id)} index={index}>
     {(provided, snapshot) => (
       <CardComponent
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
-        isDragging={snapshot.isDragging}
+        $isDragging={snapshot.isDragging}
       >
-        {todo}
+        {todo.text}
       </CardComponent>
     )}
   </Draggable>
